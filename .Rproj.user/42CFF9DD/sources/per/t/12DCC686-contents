@@ -1,0 +1,95 @@
+---
+title: "Health"
+author: "Andrew John"
+date: "2023-12-10"
+---
+
+### Load data
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+
+health_data_raw <- read.csv("./data/Sleep_health_and_lifestyle_dataset.csv")
+
+new_column_names <- c("ID", "Gender", "Age", "Occupation",
+                       "Sleep_Duration", "Sleep_Quality", "Physical_Activity",
+                       "Stress_Level", "BMI", "Blood_Pressure", 
+                       "Heart_Rate", "Steps", "Sleep_Disorder")
+
+names(health_data_raw) <- new_column_names
+
+health_data_raw <- health_data_raw %>%
+  filter(!(Occupation %in% c("Manager", "Sales Representative", "Salesperson", "Scientist", "Software Engineer")))
+```
+
+### Plot 1 (people with Higher BMI have less sleep quality compared to normal BMI)
+
+```{r message=FALSE, warning=FALSE}
+# Summarize data
+BMI_summary <- health_data_raw %>% 
+  select(BMI, Sleep_Quality, Gender) %>% 
+  arrange(Sleep_Quality)
+
+BMI_summary <- BMI_summary %>%
+  mutate(BMI = ifelse(BMI == "Normal Weight", "Normal", BMI)) %>%
+  mutate(BMI = ifelse(BMI %in% c("Obese", "Overweight"), "High BMI", BMI))
+
+# Plot data with points colored by Gender
+ggplot(BMI_summary, aes(x = BMI, y = Sleep_Quality, color = Gender)) +
+  geom_point(position = position_jitter(width = 0.2), alpha = 0.53, size = 2.5) +
+  labs(title = "Sleep Quality by BMI and Gender", x = "BMI", y = "Sleep Quality") +
+  scale_color_manual(values = c("Male" = "#2280EC", "Female" = "#E93580")) + 
+  theme_minimal()
+
+```
+
+
+### Plot 2
+
+```{r}
+
+ggplot(health_data_raw, aes(x = Stress_Level, y = Sleep_Quality)) +
+  geom_point(alpha = 0.05) +
+  geom_smooth(method = "lm", color = "darkblue", size = 1.5, alpha = 0.5) +
+  labs(title = "General Trend in Sleep Quality as Stress Increases",
+       x = "Stress Level", y = "Sleep Quality") +
+  theme_minimal()
+
+
+```
+
+### Plot 3
+
+```{r}
+# Create violin plot with lollipop points
+ggplot(health_data_raw, aes(x = Occupation, y = Sleep_Quality, color = Occupation)) +
+  geom_violin(trim = FALSE, scale = "width", alpha = 0.8) +
+  geom_point(position = position_jitter(width = 0.2), alpha = 0.1, size = 2.5) +
+  labs(title = "Violin Plot with Lollipop Points of Sleep Quality by Occupation",
+       x = "Occupation", y = "Sleep Quality") +
+  theme_minimal()
+
+
+```
+
+#plot 4
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+# Sample data (replace with your actual dataset)
+stacked_bar_data <- health_data_raw %>%
+  select(Occupation, Sleep_Quality) %>%
+  sample_n(300)  # Sample 200 rows for demonstration
+
+# Create stacked bar chart with a neutral color palette
+ggplot(stacked_bar_data, aes(x = Occupation, fill = as.factor(Sleep_Quality))) +
+  geom_bar() +
+  labs(title = "Distribution of Sleep Quality by Occupation",
+       x = "Occupation", y = "Count") +
+  scale_fill_brewer(palette = "Set3") +  # Use a color palette from RColorBrewer
+  theme_minimal()
+
+```
+

@@ -1,0 +1,7 @@
+"0","# Create violin plot with lollipop points"
+"0","ggplot(health_data_raw, aes(x = Occupation, y = Sleep_Quality, color = Occupation)) +"
+"0","  geom_violin(trim = FALSE, scale = ""width"", alpha = 0.8) +"
+"0","  geom_point(position = position_jitter(width = 0.2), alpha = 0.1, size = 2.5) +"
+"0","  labs(title = ""Violin Plot with Lollipop Points of Sleep Quality by Occupation"","
+"0","       x = ""Occupation"", y = ""Sleep Quality"") +"
+"0","  theme_minimal()"

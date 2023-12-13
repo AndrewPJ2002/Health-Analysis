@@ -1,0 +1,7 @@
+"0",""
+"0","ggplot(health_data_raw, aes(x = Stress_Level, y = Sleep_Quality)) +"
+"0","  geom_point(alpha = 0.05) +"
+"0","  geom_smooth(method = ""lm"", color = ""darkblue"", size = 1.5, alpha = 0.5) +"
+"0","  labs(title = ""General Trend in Sleep Quality as Stress Increases"","
+"0","       x = ""Stress Level"", y = ""Sleep Quality"") +"
+"0","  theme_minimal()"
